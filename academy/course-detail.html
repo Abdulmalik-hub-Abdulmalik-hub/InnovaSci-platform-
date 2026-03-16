@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Course Detail</title>
+<link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+
+<header>
+<h1>Course Detail</h1>
+<nav>
+<a href="courses.html">Back to Courses</a>
+</nav>
+</header>
+
+<main>
+<section class="course-detail" id="courseDetail">
+<!-- Course detail dynamically loaded -->
+</section>
+
+<section class="enrollment-bottom-form" id="enrollmentFormSection">
+<h3>Enroll in this Course</h3>
+<form id="enrollmentForm">
+<input type="text" id="studentName" placeholder="Full Name" required>
+<input type="email" id="studentEmail" placeholder="Email" required>
+<input type="tel" id="studentPhone" placeholder="Phone Number" required>
+<input type="file" id="paymentProof" required>
+<button type="submit">Enroll</button>
+</form>
+</section>
+</main>
+
+<script type="module" src="../assets/js/academy.js"></script>
+</body>
+</html>
