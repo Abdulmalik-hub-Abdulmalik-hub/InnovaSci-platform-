@@ -1,0 +1,95 @@
+import { supabase } from '../config/supabase.js';
+
+// Logout
+const logoutBtn = document.getElementById('logoutBtn');
+if(logoutBtn){
+  logoutBtn.addEventListener('click', async () => {
+    await supabase.auth.signOut();
+    window.location.href = '../portal/login.html';
+  });
+}
+
+// -------------------- Admin: Add/Edit/Delete --------------------
+const blogForm = document.getElementById('blogForm');
+const blogMsg = document.getElementById('blogMsg');
+const blogList = document.getElementById('blogList');
+
+if(blogForm){
+  blogForm.addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    const title = document.getElementById('blogTitle').value;
+    const category = document.getElementById('blogCategory').value;
+    const content = document.getElementById('blogContent').value;
+    const tags = document.getElementById('blogTags').value;
+    const imageFile = document.getElementById('blogImage').files[0];
+
+    let imageUrl = '';
+    if(imageFile){
+      const { data: uploadData, error: uploadError } = await supabase.storage
+        .from('blog-images')
+        .upload(`blog/${Date.now()}-${imageFile.name}`, imageFile);
+      if(uploadError) { blogMsg.textContent = uploadError.message; return; }
+      imageUrl = supabase.storage.from('blog-images').getPublicUrl(uploadData.path).publicUrl;
+    }
+
+    const { error } = await supabase.from('blogs').insert([{
+      title, category, content, tags, image_url: imageUrl
+    }]);
+
+    if(error){ blogMsg.textContent = error.message; return; }
+    blogMsg.textContent = 'Article published successfully!';
+    blogForm.reset();
+    loadBlogs();
+  });
+}
+
+// Load existing blogs (Admin)
+async function loadBlogs(){
+  if(!blogList) return;
+  const { data: blogs, error } = await supabase.from('blogs').select('*').order('created_at', {ascending:false});
+  blogList.innerHTML = '';
+  blogs.forEach(b=>{
+    const li = document.createElement('li');
+    li.innerHTML = `<strong>${b.title}</strong> | ${b.category}`;
+    blogList.appendChild(li);
+  });
+}
+loadBlogs();
+
+// -------------------- Public Blog Listing --------------------
+const blogCards = document.getElementById('blogCards');
+async function loadPublicBlogs(){
+  if(!blogCards) return;
+  const { data: blogs, error } = await supabase.from('blogs').select('*').order('created_at', {ascending:false});
+  blogCards.innerHTML = '';
+  blogs.forEach(b=>{
+    const card = document.createElement('div');
+    card.classList.add('blog-card');
+    card.innerHTML = `
+      <img src="${b.image_url}" alt="Blog Image">
+      <h3>${b.title}</h3>
+      <p>${b.category}</p>
+      <a href="article.html?id=${b.id}">Read More</a>
+    `;
+    blogCards.appendChild(card);
+  });
+}
+loadPublicBlogs();
+
+// -------------------- Public Blog Article --------------------
+const articleTitle = document.getElementById('articleTitle');
+if(articleTitle){
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get('id');
+  if(id){
+    supabase.from('blogs').select('*').eq('id', id).single().then(({data:b,error})=>{
+      if(b){
+        document.getElementById('articleTitle').textContent = b.title;
+        document.getElementById('articleImage').src = b.image_url;
+        document.getElementById('articleCategory').textContent = b.category;
+        document.getElementById('articleContent').textContent = b.content;
+        document.getElementById('articleTags').textContent = `Tags: ${b.tags}`;
+      }
+    });
+  }
+}
