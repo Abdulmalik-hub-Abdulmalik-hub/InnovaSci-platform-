@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About Founder - Admin</title>
+<link rel="stylesheet" href="../assets/css/admin.css">
+<script type="module" src="../assets/js/admin-dashboard.js" defer></script>
+</head>
+<body>
+<header>
+  <h1>Edit Founder Info</h1>
+</header>
+
+<main>
+  <form id="founderForm">
+    <input type="text" id="founderName" placeholder="Full Name" required>
+    <input type="text" id="founderTitle" placeholder="Title/Position">
+    <textarea id="founderBio" placeholder="Bio/Description"></textarea>
+    <input type="text" id="founderEducation" placeholder="Education">
+    <input type="text" id="founderSkills" placeholder="Skills (comma-separated)">
+    <button type="submit">Update</button>
+  </form>
+  <div id="formMsg"></div>
+</main>
+</body>
+</html>
