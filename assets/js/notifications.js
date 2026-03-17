@@ -1,38 +1,93 @@
+// =======================
+// notifications.js
+// Full ready-to-run for Module 8
+// Features:
+// - Load last 20 notifications
+// - Realtime updates via Supabase
+// - Toast popup for new notifications
+// - Mark-as-read functionality
+// =======================
+
 import { supabase } from '../config/supabase.js';
 
-const container = document.getElementById('notificationList');
+// DOM elements
+const notifList = document.getElementById('notifList');
+const notifBadge = document.getElementById('notifBadge');
+const toastContainer = document.getElementById('toastContainer');
 
-async function loadNotifications(){
-  const { data: userData } = await supabase.auth.getUser();
-  const user = userData.user;
-
-  if(!user) return;
-
-  const { data } = await supabase
+// Load notifications from Supabase
+async function loadNotifications() {
+  const { data, error } = await supabase
     .from('notifications')
     .select('*')
-    .eq('user_id', user.id)
-    .order('created_at', { ascending: false });
+    .order('created_at', { ascending: false })
+    .limit(20);
 
-  container.innerHTML = '';
+  if (error) {
+    console.error('Failed to load notifications:', error);
+    return;
+  }
 
-  data.forEach(n => {
-    const div = document.createElement('div');
-    div.innerHTML = `
-      <b>${n.title}</b>
-      <p>${n.message}</p>
+  // Update badge count
+  notifBadge.textContent = data.length;
+
+  // Populate notifications panel
+  notifList.innerHTML = '';
+  data.forEach((n, idx) => {
+    const li = document.createElement('li');
+    li.className = `notif-item ${n.type}`;
+    li.innerHTML = `
+      <strong>${n.title}</strong><br>
+      <span>${n.message}</span><br>
       <small>${new Date(n.created_at).toLocaleString()}</small>
-      <hr>
+      <button class="mark-read-btn">Mark as Read</button>
     `;
+    notifList.appendChild(li);
 
-    div.onclick = async ()=>{
-      await supabase.from('notifications')
-        .update({ is_read: true })
-        .eq('id', n.id);
-    };
+    // Show toast popup
+    showToast(n.title, n.message, n.type);
+  });
 
-    container.appendChild(div);
+  // Add mark-as-read functionality
+  document.querySelectorAll('.mark-read-btn').forEach((btn, idx) => {
+    btn.addEventListener('click', async () => {
+      const notif = data[idx];
+      await supabase.from('notifications').delete().eq('id', notif.id);
+      loadNotifications(); // refresh after deletion
+    });
   });
 }
 
+// Show toast popup
+function showToast(title, message, type = 'info') {
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  toast.innerHTML = `<strong>${title}</strong><br>${message}`;
+  toastContainer.appendChild(toast);
+
+  // Auto remove after 5 seconds
+  setTimeout(() => toast.remove(), 5000);
+}
+
+// Toggle notifications panel visibility
+function toggleNotifPanel() {
+  const panel = document.querySelector('.notif-list');
+  panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
+}
+window.toggleNotifPanel = toggleNotifPanel;
+
+// Subscribe to realtime notifications
+supabase
+  .channel('public:notifications')
+  .on(
+    'postgres_changes',
+    { event: '*', schema: 'public', table: 'notifications' },
+    payload => {
+      console.log('Realtime notification received:', payload.new);
+      loadNotifications();
+    }
+  )
+  .subscribe();
+
+// Initial load
 loadNotifications();
