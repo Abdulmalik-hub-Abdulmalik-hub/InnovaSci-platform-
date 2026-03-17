@@ -96,3 +96,11 @@ alert("Certificate Generated Successfully")
 })
 
 }
+// ==== Toggle Notification Panel ====
+function toggleNotifPanel() {
+  const panel = document.querySelector('.notif-list');
+  panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
+}
+
+// Expose globally so HTML button onclick can use it
+window.toggleNotifPanel = toggleNotifPanel;
