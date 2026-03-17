@@ -44,7 +44,20 @@
       <h2>My Projects</h2>
       <ul id="projectsList"></ul>
     </section>
-  </main>
+
+</main>
+<!-- Hakeem AI Chatbot -->
+<div class="chat-widget" id="chatWidget">
+  <div class="chat-header" onclick="toggleChat()">Hakeem 🤖</div>
+  <div class="chat-messages" id="chatMessages"></div>
+  <div class="chat-input">
+    <input type="text" id="chatInput" placeholder="Type your question..." />
+    <button onclick="sendMessage()">Send</button>
+  </div>
+</div>
+
+<link rel="stylesheet" href="../assets/css/chatbot.css">
+<script type="module" src="../assets/js/chatbot.js"></script>
 </body>
 </html>
 <!-- Toast Notifications Container -->
