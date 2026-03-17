@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Article - InnovaSci AI Labs</title>
+<link rel="stylesheet" href="../assets/css/style.css">
+<script type="module" src="../assets/js/blog.js" defer></script>
+</head>
+<body>
+<header>
+  <h1 id="articleTitle"></h1>
+</header>
+
+<main>
+  <img id="articleImage" src="" alt="Article Image">
+  <p id="articleCategory"></p>
+  <p id="articleContent"></p>
+  <p id="articleTags"></p>
+</main>
+</body>
+</html>
