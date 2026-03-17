@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard - InnovaSci AI Labs</title>
+<link rel="stylesheet" href="../assets/css/admin.css">
+<script type="module" src="../assets/js/admin-dashboard.js" defer></script>
+</head>
+<body>
+<header>
+  <h1>Admin Dashboard</h1>
+  <button id="logoutBtn">Logout</button>
+</header>
+
+<nav>
+  <ul>
+    <li><a href="manage-courses.html">Courses & Certificates</a></li>
+    <li><a href="manage-projects.html">Projects & Payments</a></li>
+    <li><a href="manage-blog.html">Blog Manager</a></li>
+    <li><a href="notifications.html">Notifications & Campaigns</a></li>
+    <li><a href="about-founder.html">About Founder</a></li>
+  </ul>
+</nav>
+
+<main>
+  <section id="dashboardOverview">
+    <h2>Overview</h2>
+    <div class="cards">
+      <div class="card">Courses: <span id="totalCourses">0</span></div>
+      <div class="card">Projects: <span id="totalProjects">0</span></div>
+      <div class="card">Students: <span id="totalStudents">0</span></div>
+      <div class="card">Blog Posts: <span id="totalBlogs">0</span></div>
+    </div>
+  </section>
+</main>
+</body>
+</html>
