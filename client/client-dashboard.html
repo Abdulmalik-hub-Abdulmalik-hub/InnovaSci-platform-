@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Client Dashboard - InnovaSci AI Labs</title>
+<link rel="stylesheet" href="../assets/css/dashboard.css">
+<script type="module" src="../assets/js/dashboard.js" defer></script>
+</head>
+<body>
+  <header>
+    <h1>Client Dashboard</h1>
+    <button id="logoutBtn">Logout</button>
+  </header>
+
+  <nav>
+    <ul>
+      <li><a href="client-dashboard.html">🏠 Dashboard</a></li>
+      <li><a href="projects.html">📂 My Projects</a></li>
+      <li><a href="invoices.html">💰 Invoices</a></li>
+      <li><a href="messages.html">✉️ Messages</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <!-- Submit Project Form -->
+    <section id="submit-project">
+      <h2>Submit New Project</h2>
+      <form id="projectForm">
+        <label>Title: <input type="text" id="projectTitle" required></label>
+        <label>Description:
+          <textarea id="projectDescription" required></textarea>
+        </label>
+        <label>Upload Files:
+          <input type="file" id="projectFiles" multiple>
+        </label>
+        <button type="submit">Submit Project</button>
+      </form>
+      <div id="projectMsg"></div>
+    </section>
+
+    <!-- My Projects / Progress -->
+    <section id="my-projects">
+      <h2>My Projects</h2>
+      <ul id="projectsList"></ul>
+    </section>
+  </main>
+</body>
+</html>
